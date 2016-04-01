@@ -29,3 +29,17 @@ python3 server.py <local-port>
 Then run the client program with the following:
 python3 client.py <remote-IP> <remote-port> <local-file-to-transfer>
 The new file is located at recv/<filename>
+
+Database notes:
+  
+  Contain Database tables for users. cd into directory folder is in. Then 'cd msite'.
+  login/models.py contains the users
+  
+  To see database tables, 'python manage.py sqlmigrate login 0002'
+  To go to the admin page: 'python manage.py runserver'. User:admin Password:infosecurity
+  To explore database API: 'python manage.py shell' Once you're in the shell, 'from login.models import User'
+  ->'User.objects.all()' gets the users in the system
+  ->'from django.utils import timezone' imports timezone so we can track when users make their accounts
+  ->' "name" =User(name= "Username" ,create_date= timezone.now() , password= "password" )' creates a new user
+  ->' "Username".save()' saves the user
+  
