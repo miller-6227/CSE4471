@@ -3,88 +3,101 @@ import os.path
 import socket
 import struct
 
-# open file for reading
-def open_file(filename):
-    try:
-        return open(filename, 'rb')         # binary mode
-    except:
-        print("Unable to open the named file")
-        quit()
+""" requirements:
+(1) the file to be sent must in a subdirectory in called '/transfer_file'
+(2) initialize a client with a remote ip and port
+    i.e. c = Client(remote_ip, remote_port)
+
+"""
+class Client:
+
+    # initialize a client connection. need an ip and port to transfer to
+    def __init__(self, remote_ip, remote_port):
+        self.remote_ip, self.remote_port = remote_ip, remote_port
+
+    # (private method) open file for reading
+    def __open_file(filename):
+        try:
+            return open(filename, 'rb')         # binary mode
+        except:
+            print("Unable to open the named file")
+            quit()
 
 
-# main program
+    # method to open a connection to send a file
+    def send_file(filename):
 
-# check correct number of command line arguments
-if len(sys.argv) != 4:
-    print("You need exactly 4 command line arguments")
-    quit()
+        # establish connection
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((self.remote_ip, self.remote_port))
+        except:
+            print("Failed to establish connection")
+            quit()
 
-# get the command line arguments 
-remote_ip = str(sys.argv[1])			# <remote-IP-on-gamma>
-remote_port = int(sys.argv[2])		       	# <remote-port-on-gamma>
-local_file = open_file(sys.argv[3])		# open <local-file-to-transfer>
+        ''' prepare the header '''
+        # open the file
+        local_file = self.__open_file(filename)
 
-# get the file information
-try:
-    size = os.path.getsize('./' + str(sys.argv[3]))
-except:
-    print("Unable to get the size of the local file")
-    quit()    
-
-# establish connection
-try:
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((remote_ip, remote_port))
-except:
-    print("Failed to establish connection")
-    quit()
-
-# send the size
-try:
-    data = struct.pack("i", size)
-    s.send(data)                  # send the size
-except:
-    print("Failed to send file size")
-    quit()
-
-# send the name of the file
-# ensure that the name is exactly 20 bytes
-name = str(sys.argv[3])
-if (len(name) > 20):
-    name = name[0:20]
-elif (len(name) < 20):
-    while(len(name) != 20):
-        name += '\0'
-try:
-    s.send(name.encode('utf-8'))      # send the name
-except:
-    print("Failed to send file name")
-    quit()
-
-# send the rest of the file (sent in the TCP stream)
-data_size = 512                         # set the data size to read at a time
-try:
-    while 1:
-        chunk = local_file.read(data_size)       # read the specified size of data from the file
-        if not chunk:
-            break;
-        s.send(chunk)               		 # send the data chunk
-except:
-    print("Error sending the file data")
-    quit()
-
-# finish connection
-try:
-    s.close()
-except:
-    print("Failed to close connection")
-
-# close the files
-try:
-    local_file.close()
-except:
-    print("Error closing file")
+        # ensure that the name is exactly 20 bytes
+        if (len(filename) > 20):
+            filename = filename[0:20]
+        elif (len(filename) < 20):
+            while(len(filename) != 20):
+                filename += '\0'
+               
+        # get the file size
+        try:
+            size = os.path.getsize('./transfer_file' + filename)
+        except:
+            print("Unable to get the size of the local file")
+            quit()
+ 
+        ''' prepare and encrypt the data of the file itself '''
+#TODO
 
 
+        ''' Send the header '''
+
+        # send the size
+        try:
+            data = struct.pack("i", size)
+            s.send(data)                  # send the size
+        except:
+            print("Failed to send file size")
+            quit()
+
+        try:
+            s.send(name.encode('utf-8'))      # send the name
+        except:
+            print("Failed to send file name")
+            quit()
+
+
+
+        ''' Send the encrypted file '''
+
+        # send the rest of the file (sent in the TCP stream)
+        data_size = 512                         # set the data size to read at a time
+        try:
+            while 1:
+                chunk = local_file.read(data_size)  # read the specified size of data from the file
+                if not chunk:
+                    break;
+                s.send(chunk)               	# send the data chunk
+        except:
+            print("Error sending the file data")
+            quit()
+
+        # finish connection
+        try:
+            s.close()
+        except:
+            print("Failed to close connection")
+        # close the file
+        try:
+            local_file.close()
+        except:
+            print("Failed to close the local file")
 
 
