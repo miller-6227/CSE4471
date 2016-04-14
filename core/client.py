@@ -3,20 +3,22 @@ import os.path
 import socket
 import struct
 
+import rsa
+
 """ requirements:
 (1) the file to be sent must in a subdirectory in called '/transfer_file'
 (2) initialize a client with a remote ip and port
     i.e. c = Client(remote_ip, remote_port)
 
 """
-class Client:
+class Client(rsa.Crypto):
 
     # initialize a client connection. need an ip and port to transfer to
     def __init__(self, remote_ip, remote_port):
         self.remote_ip, self.remote_port = remote_ip, remote_port
 
     # (private method) open file for reading
-    def __open_file(filename):
+    def __open_file(self, filename):
         try:
             return open(filename, 'rb')         # binary mode
         except:
@@ -25,7 +27,7 @@ class Client:
 
 
     # method to open a connection to send a file
-    def send_file(filename):
+    def send_file(self, filename):
 
         # establish connection
         try:
@@ -34,6 +36,16 @@ class Client:
         except:
             print("Failed to establish connection")
             quit()
+
+        ''' get the public key needed to encrypt '''
+        try:
+            data = s.recv(4)
+            key = struct.unpack("i", data)
+            print("key: ", key)
+        except:
+            print("Failed to receive public key")
+            quit()    
+    
 
         ''' prepare the header '''
         # open the file
@@ -53,10 +65,6 @@ class Client:
             print("Unable to get the size of the local file")
             quit()
  
-        ''' prepare and encrypt the data of the file itself '''
-#TODO
-
-
         ''' Send the header '''
 
         # send the size
@@ -73,10 +81,11 @@ class Client:
             print("Failed to send file name")
             quit()
 
-
+        ''' prepare and encrypt the data of the file itself '''
+        # create a crypto class
+        crypter = Crypto()
 
         ''' Send the encrypted file '''
-
         # send the rest of the file (sent in the TCP stream)
         data_size = 512                         # set the data size to read at a time
         try:
@@ -84,6 +93,7 @@ class Client:
                 chunk = local_file.read(data_size)  # read the specified size of data from the file
                 if not chunk:
                     break;
+                chunk = crypter.encrypt(chunk, key) # encrypt the chunk
                 s.send(chunk)               	# send the data chunk
         except:
             print("Error sending the file data")
