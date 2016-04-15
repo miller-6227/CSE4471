@@ -4,10 +4,10 @@ import sys
 import socket
 import time
 import struct
-
+import pickle
 import rsa
 
-class Server(rsa.Crypto):
+class Server:
     
     # initialize a server connection class
     def __init__(self, local_port):
@@ -30,13 +30,13 @@ class Server(rsa.Crypto):
 
         ''' generate a key and send the public key '''
         # create a crypto class for rsa 
-        crypter = Crypto()
+        crypter = rsa.Crypto()
         # generate keys, using 8 bits for speed 
-        key = crypter.generate_key(8)
+        a,b = crypter.generate_key(8)
         # send the public key
         try:
-            data = struct.pack("i", key)
-            s.send(data)
+            data = struct.pack("ii", a, b)
+            conn.send(data)
         except:
             print("Unable to send the public key")
             quit()
@@ -51,6 +51,7 @@ class Server(rsa.Crypto):
             quit()
         print("Filesize: ", size)
 
+
         # get next 20 bytes (contains the name of the file)
         try:
             name = conn.recv(20)    # get the 20 byte name
@@ -62,21 +63,32 @@ class Server(rsa.Crypto):
         print("Filename: ", name)
 
         ''' select where to save the received file ''' 
-        path = ""
+        path = os.path.dirname(os.path.realpath(__file__))
+        path = os.path.join(path, "test")
+        if not os.path.isdir(path):
+            try:
+                os.mkdir(path)
+            except:
+                print("unable to create subdirectory")
+                quit()
+
         file_path = os.path.join(path, name)       # path to the subdirectory + /filename
         try:
-            return open(file_path, 'wb')                    # return a opened file
+            new_file = open(file_path, 'wb')                    # return a opened file
         except:
             print("Error creating file at the given path")
             quit()
 
         ''' get (update) the rest of the file (sent in the TCP stream) '''
+
         try:
             while 1:
                 data = conn.recv(512)        # get the chunk of data
                 if not data: break           # check for null
+                data = pickle.loads(data)
                 data = crypter.decrypt(data) # decrypt the data
-                new_file.write(data)         # write that data to the file
+                new_file.write(data.encode())         # write that binary data to the file
+                conn.send("1".encode("utf-8"))
         except:
             print("Error receiving file contents")
             quit()
