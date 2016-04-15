@@ -27,7 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+SECURE_PROXY_SSL_HEADER=('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT=True
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'fileTransfer',
+    'djangosecure',
+    'sslserver',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -50,6 +53,10 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+#    'msite3.middleware.client.Client',
+#    'msite3.middleware.rsa.Crypto',
+#    'msite3.middleware.server.Client'.
 ]
 
 ROOT_URLCONF = 'msite3.urls'
