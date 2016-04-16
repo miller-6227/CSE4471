@@ -2,7 +2,7 @@ import sys
 import os.path
 import socket
 import struct
-
+import pickle
 import rsa
 
 """ requirements:
@@ -11,7 +11,7 @@ import rsa
     i.e. c = Client(remote_ip, remote_port)
 
 """
-class Client(rsa.Crypto):
+class Client:
 
     # initialize a client connection. need an ip and port to transfer to
     def __init__(self, remote_ip, remote_port):
@@ -39,9 +39,8 @@ class Client(rsa.Crypto):
 
         ''' get the public key needed to encrypt '''
         try:
-            data = s.recv(4)
-            key = struct.unpack("i", data)
-            print("key: ", key)
+            data = s.recv(512)
+            key = struct.unpack("ii", data)
         except:
             print("Failed to receive public key")
             quit()    
@@ -60,7 +59,7 @@ class Client(rsa.Crypto):
                
         # get the file size
         try:
-            size = os.path.getsize('./transfer_file' + filename)
+            size = os.path.getsize('./' + "test.jpg")
         except:
             print("Unable to get the size of the local file")
             quit()
@@ -76,25 +75,37 @@ class Client(rsa.Crypto):
             quit()
 
         try:
-            s.send(name.encode('utf-8'))      # send the name
+            s.send(filename.encode('utf-8'))      # send the name
         except:
             print("Failed to send file name")
             quit()
 
         ''' prepare and encrypt the data of the file itself '''
         # create a crypto class
-        crypter = Crypto()
+        crypter = rsa.Crypto()
+        a, b = key[0], key[1]
 
         ''' Send the encrypted file '''
         # send the rest of the file (sent in the TCP stream)
-        data_size = 512                         # set the data size to read at a time
+        data_size = 25                       # set the data size to read at a time
         try:
+            count = 0
             while 1:
                 chunk = local_file.read(data_size)  # read the specified size of data from the file
-                if not chunk:
-                    break;
-                chunk = crypter.encrypt(chunk, key) # encrypt the chunk
-                s.send(chunk)               	# send the data chunk
+                if chunk == b'':
+                    break
+                chunk = str(chunk)
+                chunk = chunk[2:len(chunk)-1]
+                try:
+                    chunk = crypter.encrypt(chunk, a, b) # encrypt the chunk
+                except:
+                    print("Error encrypting data")
+                    quit()
+                data_string = pickle.dumps(chunk)
+                s.send(data_string)               	# send the data chunk
+                s.recv(1)
+                count += data_size
+                print((count/size)*100, " percent")
         except:
             print("Error sending the file data")
             quit()
