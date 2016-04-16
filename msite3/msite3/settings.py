@@ -32,7 +32,6 @@ SECURE_SSL_REDIRECT=True
 # Application definition
 
 INSTALLED_APPS = [
-    'login.apps.LoginConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +41,7 @@ INSTALLED_APPS = [
     'fileTransfer',
     'djangosecure',
     'sslserver',
+    'login',
 ]
 
 MIDDLEWARE_CLASSES = [
