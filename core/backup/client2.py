@@ -2,6 +2,7 @@ import sys
 import os.path
 import socket
 import struct
+import pickle
 import rsa
 
 """ requirements:
@@ -19,7 +20,7 @@ class Client:
     # (private method) open file for reading
     def __open_file(self, filename):
         try:
-            return open(filename, 'r', "utf-8")         # binary mode
+            return open(filename, 'rb')         # binary mode
         except:
             print("Unable to open the named file")
             quit()
@@ -93,13 +94,15 @@ class Client:
                 chunk = local_file.read(data_size)  # read the specified size of data from the file
                 if chunk == b'':
                     break
+                chunk = str(chunk)
+                chunk = chunk[2:len(chunk)-1]
                 try:
-                    print(chunk)
                     chunk = crypter.encrypt(chunk, a, b) # encrypt the chunk
                 except:
                     print("Error encrypting data")
                     quit()
-                s.send(chunk)               	# send the data chunk
+                data_string = pickle.dumps(chunk)
+                s.send(data_string)               	# send the data chunk
                 s.recv(1)
                 count += data_size
                 print((count/size)*100, " percent")

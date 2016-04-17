@@ -4,6 +4,7 @@ import sys
 import socket
 import time
 import struct
+import pickle
 import rsa
 
 class Server:
@@ -84,8 +85,9 @@ class Server:
             while 1:
                 data = conn.recv(512)        # get the chunk of data
                 if not data: break           # check for null
+                data = pickle.loads(data)
                 data = crypter.decrypt(data) # decrypt the data
-                new_file.write(data)         # write that binary data to the file
+                new_file.write(data.encode())         # write that binary data to the file
                 conn.send("1".encode("utf-8"))
         except:
             print("Error receiving file contents")
