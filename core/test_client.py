@@ -1,7 +1,7 @@
 import client
 
 HOST = ''
-port = 6000
+port = 7777
 
 print("creating client")
 c = client.Client(HOST, port)

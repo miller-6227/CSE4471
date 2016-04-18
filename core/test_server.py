@@ -1,7 +1,7 @@
 import server
 
 
-port = 6000
+port = 7777
 
 print("Creating server")
 s = server.Server(port)
