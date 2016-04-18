@@ -9,3 +9,8 @@ class UserForm(ModelForm):
     class Meta:
         model=User
         fields=['name', 'password',]
+
+class DocumentForm(forms.Form):
+    docfile = forms.FileField(
+        label='Select a file'
+    )
