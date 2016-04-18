@@ -40,6 +40,10 @@ def create(request):
 		if form.is_valid():
 			user=form.save()
 			user.save()
+			return HttpResponseRedirect('/fileTransfer/')
+
+
+
 	return render(request, 'fileTransfer/create.html', {'form':form})
 
 def about(request):
