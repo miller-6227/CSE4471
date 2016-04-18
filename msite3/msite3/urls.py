@@ -15,10 +15,15 @@ Including another URLconf
 """
 
 from django.conf.urls import url, include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.generic import RedirectView
 from django.contrib import admin
 
 urlpatterns = [
     url(r'^login/', include('login.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^fileTransfer/', include('fileTransfer.urls')),
-]
+    url(r'^$', RedirectView.as_view(url='/fileTransfer/list/', permanent=True)),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
