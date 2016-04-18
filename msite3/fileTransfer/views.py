@@ -1,3 +1,5 @@
+import sys
+import subprocess
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
@@ -18,7 +20,7 @@ def list(request):
 		if form.is_valid():
 			newdoc = Document(docfile = request.FILES['docfile'])
 			newdoc.save()
-
+			#subprocess.call(["ls","-l"])
 			#redirect to list/main
 			return HttpResponseRedirect(reverse('fileTransfer.views.list'))
 
