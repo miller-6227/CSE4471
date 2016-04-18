@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     #'fileTransfer',
     'djangosecure',
     'sslserver',
-    'login',
+    #'login',
 ]
 
 MIDDLEWARE_CLASSES = [
