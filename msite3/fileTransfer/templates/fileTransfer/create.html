@@ -58,14 +58,10 @@
       <p>Confirm Password: <input title="Please enter the same Password as above" type="password" required pattern="(?=.*[!-/])(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" name="pwd2" onchange="
       this.setCustomValidity(this.validity.patternMismatch ? this.title : '');
       "></p>
-      <p><input type="submit" value="Submit"></p>
+      <p><input class="btn btn-lg btn-primary btn-block" type="submit" value="Submit"></p>
       </fieldset>
       </form>
 
-
-
-
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
         <button onclick="window.location='{% url 'main' %}';" class="btn btn-lg btn-success btn-block">Go Back</button>
       </form>
 
