@@ -8,10 +8,10 @@ import struct
 import rsa
 
 class Server(rsa.Crypto):
-
+    
     # initialize a server connection class
     def __init__(self, local_port):
-        self.local_port = local_port
+        self.local_port = local_port 
 
     # receive the file on a local port
     def receive_file(self):
@@ -29,9 +29,9 @@ class Server(rsa.Crypto):
             quit()
 
         ''' generate a key and send the public key '''
-        # create a crypto class for rsa
+        # create a crypto class for rsa 
         crypter = Crypto()
-        # generate keys, using 8 bits for speed
+        # generate keys, using 8 bits for speed 
         key = crypter.generate_key(8)
         # send the public key
         try:
@@ -42,7 +42,7 @@ class Server(rsa.Crypto):
             quit()
 
         ''' receive the header '''
-        # get first 4 bytes (contains the number of bytes in the file to follow)
+        # get first 4 bytes (contains the number of bytes in the file to follow)	
         try:
             data = conn.recv(4)
             size, = struct.unpack("i", data)
@@ -61,7 +61,7 @@ class Server(rsa.Crypto):
             quit()
         print("Filename: ", name)
 
-        ''' select where to save the received file '''
+        ''' select where to save the received file ''' 
         path = ""
         file_path = os.path.join(path, name)       # path to the subdirectory + /filename
         try:
@@ -78,6 +78,7 @@ class Server(rsa.Crypto):
                 data = crypter.decrypt(data) # decrypt the data
                 new_file.write(data)         # write that data to the file
         except:
+            print("Error receiving file contents")
             quit()
 
 
@@ -93,3 +94,6 @@ class Server(rsa.Crypto):
             new_file.close()
         except:
             print("Error closing file")
+
+
+

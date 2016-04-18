@@ -10,3 +10,6 @@ def create(request):
 
 def about(request):
 	return render(request, 'fileTransfer/about.html', {})
+
+def sendFile(request):
+        return render(request, 'fileTransfer/sendFile.html', {})
