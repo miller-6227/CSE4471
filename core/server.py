@@ -6,6 +6,11 @@ import time
 import struct
 import rsa
 
+
+'''
+(1) Initialize like s = Server(local_port)
+(2) receive a file like s.receive_file()
+'''
 class Server:
     
     # initialize a server connection class
@@ -37,12 +42,12 @@ class Server:
 
         # send the public key
         try:
-            byte_len = len(str(a))
-            data = a.to_bytes(byte_len, 'little')
-            conn.send(data)
-            conn.recv(1)
+            byte_len = len(str(a))          # get the length for to bytes
+            data = a.to_bytes(byte_len, 'little')   # int to bytes
+            conn.send(data)             # send it
+            conn.recv(1)                # ack
 
-            byte_len = len(str(a))
+            byte_len = len(str(a))      # same thing
             data = b.to_bytes(byte_len, 'little')
             conn.send(data)
             conn.recv(1)

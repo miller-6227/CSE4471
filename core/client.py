@@ -8,7 +8,7 @@ import rsa
 (1) the file to be sent must in a subdirectory in called '/transfer_file'
 (2) initialize a client with a remote ip and port
     i.e. c = Client(remote_ip, remote_port)
-
+(3) send a file with c.send_file(filename) after intialization
 """
 class Client:
 
@@ -19,7 +19,7 @@ class Client:
     # (private method) open file for reading
     def __open_file(self, filename):
         try:
-            return open(filename, 'rb')         # binary mode
+            return open('./transfer_file/' + filename, 'rb')         # binary mode
         except:
             print("Unable to open the named file")
             quit()
@@ -39,11 +39,11 @@ class Client:
         ''' get the public key needed to encrypt '''
         key = [0, 0]
         try:
-            data = s.recv(512)
-            key[0] = int.from_bytes(data, 'little')
-            s.send("1".encode('utf-8'))
+            data = s.recv(512)  # received data
+            key[0] = int.from_bytes(data, 'little') # bytes to int
+            s.send("1".encode('utf-8')) # send ack
 
-            data = s.recv(512)
+            data = s.recv(512)  # same thing
             key[1] = int.from_bytes(data, 'little')
             s.send("1".encode('utf-8'))          
         except:
@@ -63,7 +63,7 @@ class Client:
                
         # get the file size
         try:
-            size = os.path.getsize('./' + "test.jpg")
+            size = os.path.getsize('./transfer_file/' + "test.jpg")
         except:
             print("Unable to get the size of the local file")
             quit()
@@ -101,22 +101,22 @@ class Client:
                 if chunk == b'': break
                 # encrypt the data
                 try:
-                    int_rep = int.from_bytes(chunk, 'little')
-                    int_length = len(chunk)
-                    cipher_int = crypter.encrypt(int_rep, key[0], key[1])
-                    cipher = cipher_int.to_bytes(100, 'little')
+                    int_rep = int.from_bytes(chunk, 'little')       # bytes to integer
+                    int_length = len(chunk)                         # byte length for reversing
+                    cipher_int = crypter.encrypt(int_rep, key[0], key[1])   # encrypt integer
+                    cipher = cipher_int.to_bytes(100, 'little') # integer back to bytes for transfer
                 except:
                     print("Unable to encrypt the file integer representation")            
                     quit()
                 # send the data
                 try:
                     # first send the size of the byte string, needed to decode
-                    int_length = struct.pack('i', int_length)
-                    s.send(int_length)
-                    s.recv(1)
+                    int_length = struct.pack('i', int_length) # pack it
+                    s.send(int_length)  # send it
+                    s.recv(1)       # ack
                     # then send the file data (encrypted) itself
-                    s.send(cipher)
-                    s.recv(1)
+                    s.send(cipher)  # it's already bytes. so just send
+                    s.recv(1)       # ack
                 except:
                     print("Unable to send the cipher")
                     quit()
