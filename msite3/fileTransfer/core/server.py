@@ -4,7 +4,9 @@ import sys
 import socket
 import time
 import struct
-from . import rsa
+
+
+import rsa
 
 
 '''
@@ -21,12 +23,17 @@ class Server:
     def receive_file(self):
         ''' set up the connection '''
         HOST = ''
+        
         # establish connection
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            print(HOST, self.local_port)
             s.bind((HOST, self.local_port))
+            print("C")
             s.listen(1)
+            print("D")
             conn, addr = s.accept()
+            print("E")
             time.sleep(1)
         except:
             print("Failed to establish connection")
@@ -139,4 +146,16 @@ class Server:
             print("Error closing file")
 
 
+# executing code
 
+print("running")
+
+# get the args
+port = sys.argv[1]
+
+# create a server
+s = Server(port)
+
+s.receive_file()
+
+time.sleep(5)

@@ -5,6 +5,9 @@ urlpatterns = [
 	url(r'^$', views.main, name='main'),
 	url(r'create/', views.create, name='create'),
 	url(r'about/', views.about, name='about'),
-	url(r'sendFile/', views.sendFile, name='sendFile'),
+        url(r'transfer/', views.TransferView.as_view(), name='transfer'),
 	url(r'list/', views.list, name='list'),
+	url(r'wrongPassword/', views.wrongPassword, name='wrongPassword'),
+        url(r'sending/', views.send, name="send"),
+        url(r'receiving/', views.receive, name="receive"),
 ]
