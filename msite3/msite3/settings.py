@@ -32,16 +32,18 @@ SECURE_SSL_REDIRECT=True
 # Application definition
 
 INSTALLED_APPS = [
+    'login.apps.LoginConfig',
+    'fileTransfer.apps.FiletransferConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'fileTransfer',
+    #'fileTransfer',
     'djangosecure',
     'sslserver',
-    'login',
+    #'login',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -53,6 +55,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
 
 #    'msite3.middleware.client.Client',
 #    'msite3.middleware.rsa.Crypto',

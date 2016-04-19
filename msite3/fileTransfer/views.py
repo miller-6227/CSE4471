@@ -2,6 +2,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from fileTransfer.models import Document, Transfer
+
+from .forms import UserForm
+from fileTransfer.models import Document
 from fileTransfer.forms import DocumentForm
 from django.views.generic import View
 from django.template import loader
@@ -31,11 +34,22 @@ def list(request):
 	documents = Document.objects.all()
 
 	# Render main page
-	return render(request, 'fileTransfer/list.html', 
+	return render(request, 'fileTransfer/list.html',
 		{'documents':documents, 'form': form})
 
 def create(request):
-	return render(request, 'fileTransfer/create.html', {})
+	form=UserForm()
+
+	if request.method=="POST":
+		form=UserForm(request.POST)
+		if form.is_valid():
+			user=form.save()
+			user.save()
+			return HttpResponseRedirect('/fileTransfer/')
+
+
+
+	return render(request, 'fileTransfer/create.html', {'form':form})
 
 def about(request):
 	return render(request, 'fileTransfer/about.html', {})
