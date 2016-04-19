@@ -1,22 +1,14 @@
 {% extends 'fileTransfer/base.html' %}
 
-
 {% block content %}
   <div class="container">
 
       <div class="starter-template">
-        <h1>Send a file</h1>
-        <p class="lead">send a file here. you need a destination address and port and file to send</p>
-		
-	<form>
-		Remote IP:<br>
-		<input type="text" name="remote_ip"><br>
-		Remote Port:<br>
-		<input type="text" name="remote_port"><br>
-	</form>
-	
-	
-	<p class="lead">Select a File
+        <h1>File Transfer Application</h1>
+        <p class="lead">Welcome to the application, where it should do stuff apparently.
+          Work in Progress~</p>
+
+         <p class="lead">
          {% if documents %}
              <ul>
                  {% for document in documents %}
@@ -26,27 +18,34 @@
          {% else %}
              <p>No documents.</p>
          {% endif %}
-
-
+ 
          <!-- Upload form. Note enctype attribute! -->
-         <form action="{% url "Sender" %}" method="post" enctype="multipart/form-data">
+         <form action="{% url "transfer" %}" method="post" enctype="multipart/form-data">
              {% csrf_token %}
              <p>{{ form.non_field_errors }}</p>
- 
              <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
- 
              <p>
                  {{ form.docfile.errors }}
                  {{ form.docfile }}
              </p>
-	     <p><input type="submit" value="Upload"/></p>
+             <p><input type="submit" value="Upload"/></p>
          </form>
          </p>
 
-	<form action="{% url "Sender" %}" method="post">
-		<input id="submit" type="button" value="Send File" />
-	</form>	
+         <form action="{% url "transfer" %}" method="send" enctype="multipart/form-data">
+             <p><input type="submit" value="Send"/></p>
+         </form>
+         </p>
+
+         <form action="{% url "transfer" %}" method="receive" enctype="multipart/form-data">
+             <p><input type="submit" value="Receive"/></p>
+         </form>
+         </p>
 
       </div>
     </div><!-- /.container -->
 {% endblock %}
+
+
+
+
