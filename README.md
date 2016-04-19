@@ -1,11 +1,18 @@
 TODO:
 (1) transfer.html template call method from view based class TransferView
+
     (a) sending needs the current user, friend, and file
+    
     (b) receiving needs the current user
+
 (2) correct TransferView methods send() and receive()
+
 (3) make sure User.send_file and User.receive_file work
+
     (a) modify send_file to set up the file for transfer
+
 (4) style everything
+
 
 
 
