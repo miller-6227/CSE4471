@@ -1,5 +1,6 @@
 {% extends 'fileTransfer/base.html' %}
 
+
 {% block content %}
   <div class="container">
 
@@ -11,13 +12,40 @@
 		Remote IP:<br>
 		<input type="text" name="remote_ip"><br>
 		Remote Port:<br>
-		<input type="text" name="remote_port">
-		Filename:<br>
-		<input type="text" name="filename">
+		<input type="text" name="remote_port"><br>
 	</form>
+	
+	
+	<p class="lead">Select a File
+         {% if documents %}
+             <ul>
+                 {% for document in documents %}
+                     <li><a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a></li>
+                 {% endfor %}
+             </ul>
+         {% else %}
+             <p>No documents.</p>
+         {% endif %}
 
-		
 
+         <!-- Upload form. Note enctype attribute! -->
+         <form action="{% url "Sender" %}" method="post" enctype="multipart/form-data">
+             {% csrf_token %}
+             <p>{{ form.non_field_errors }}</p>
+ 
+             <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
+ 
+             <p>
+                 {{ form.docfile.errors }}
+                 {{ form.docfile }}
+             </p>
+	     <p><input type="submit" value="Upload"/></p>
+         </form>
+         </p>
+
+	<form action="{% url "Sender" %}" method="post">
+		<input id="submit" type="button" value="Send File" />
+	</form>	
 
       </div>
     </div><!-- /.container -->

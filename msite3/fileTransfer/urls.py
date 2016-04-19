@@ -8,4 +8,5 @@ urlpatterns = [
 	url(r'sendFile/', views.sendFile, name='sendFile'),
 	url(r'list/', views.list, name='list'),
 	url(r'wrongPassword/', views.wrongPassword, name='wrongPassword'),
+    url(r'Sender/', views.SenderView.as_view(), name='Sender'),
 ]
