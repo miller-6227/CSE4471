@@ -7,4 +7,5 @@ urlpatterns = [
 	url(r'about/', views.about, name='about'),
 	url(r'sendFile/', views.sendFile, name='sendFile'),
 	url(r'list/', views.list, name='list'),
+	url(r'wrongPassword/', views.wrongPassword, name='wrongPassword'),
 ]
