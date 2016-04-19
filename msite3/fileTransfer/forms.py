@@ -8,7 +8,7 @@ from django.core.context_processors import csrf
 class UserForm(ModelForm):
     class Meta:
         model=User
-        fields=['name', 'password', 'ip_address', 'port_number','file_directory','friends']
+        fields=['name', 'password', 'ip_address', 'file_directory','friends']
 
 class DocumentForm(forms.Form):
     docfile = forms.FileField(

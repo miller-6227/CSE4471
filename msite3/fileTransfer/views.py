@@ -94,11 +94,43 @@ def about(request):
 def wrongPassword(request):
 	return render(request, 'fileTransfer/wrongPassword.html', {})
 
+
+''' transfer handling '''
+
+def send(request):
+    # get the current user
+    current_user_name = "Dan"                               # TODO testing *****
+    user = User.objects.get(name = current_user_name)
+    # select a friend
+    friend_name = "dead"                                    # TODO testing *****
+    friend = User.objects.get(name = friend_name)
+    # select the file to be sent
+    doc_id = "27_-_5BLDnqz_u0BDp95.jpg"                                 # TODO testing ****
+    transfer_file = Document(docfile = doc_id) 
+    # call the model User method
+    user.send_file(friend, transfer_file)
+    # return the view
+    form = DocumentForm()
+    documents = Document.objects.all()
+    return render(request, 'fileTransfer/transfer.html', {'documents': documents, 'form': form})
+
+def receive(request):
+    # get the current userme 
+    current_user="Dan"                                      # TODO testing *****
+    user = User.objects.get(name = current_user)
+    # call the model User method
+    user.receive_file()
+    # return the view
+    form = DocumentForm()
+    documents = Document.objects.all()
+    return render(request, 'fileTransfer/transfer.html', {'documents': documents, 'form': form})
+
+
+
 class TransferView(DetailView):
 
     model = User
     template_name = 'fileTransfer/transfer.html'
-    open_file = ''
 
     def get(self, request, *args, **kwargs):
         form = DocumentForm()
@@ -110,8 +142,11 @@ class TransferView(DetailView):
         if self.request.method == 'POST':
             form = DocumentForm(self.request.POST, self.request.FILES)
             if form.is_valid():
-                self.open_file = Document(docfile = self.request.FILES['docfile'])
-                self.open_file.save()
+                open_file = Document(docfile = self.request.FILES['docfile'])
+                open_file.save()
+
+                print(open_file.id)
+                
                 return HttpResponseRedirect('.')
         else:
             form = DocumentForm()
@@ -119,18 +154,5 @@ class TransferView(DetailView):
         documents = Document.objects.all()
         # Render main page
         return render(self.request, self.template_name, {'documents':documents, 'form': form})
-
-    def send(self, request):
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~PINGINGING~~~~~~~~~~~~~")
-        user = get_object()
-        # select a friend
-        friend = get_object(User.object.filter(friends))
-
-        user.send_file(friend, self.open_file)
-
-    def receive(self, request):
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~PINGINGING~~~~~~~~~~~~~")
-        user = get_object()
-        user.receive_file()
 
 

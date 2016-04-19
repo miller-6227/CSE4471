@@ -8,4 +8,6 @@ urlpatterns = [
         url(r'transfer/', views.TransferView.as_view(), name='transfer'),
 	url(r'list/', views.list, name='list'),
 	url(r'wrongPassword/', views.wrongPassword, name='wrongPassword'),
+        url(r'sending/', views.send, name="send"),
+        url(r'receiving/', views.receive, name="receive"),
 ]

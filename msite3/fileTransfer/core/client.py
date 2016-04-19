@@ -2,15 +2,15 @@ import sys
 import os.path
 import socket
 import struct
+import time
 
-from . import rsa
+import rsa
 
 
 """ requirements:
-(1) the file to be sent must in a subdirectory in called '/transfer_file'
-(2) initialize a client with a remote ip and port
+(1) initialize a client with a remote ip and port
     i.e. c = Client(remote_ip, remote_port)
-(3) send a file with c.send_file(filename) after intialization
+(2) send a file with c.send_file(path_to_file_dir, filename) after intialization
 """
 class Client:
 
@@ -19,16 +19,17 @@ class Client:
         self.remote_ip, self.remote_port = remote_ip, remote_port
 
     # (private method) open file for reading
-    def __open_file(self, filename):
+    def __open_file(self, path, filename):
         try:
-            return open('./transfer_file/' + filename, 'rb')         # binary mode
+            filepath = os.path.join(path, filename)
+            return open(filepath, 'rb')         # open the file in binary mode
         except:
             print("Unable to open the named file")
             quit()
 
 
     # method to open a connection to send a file
-    def send_file(self, filename):
+    def send_file(self, path, filename):
 
         # establish connection
         try:
@@ -54,7 +55,7 @@ class Client:
 
         ''' prepare the header '''
         # open the file
-        local_file = self.__open_file(filename)
+        local_file = self.__open_file(path, filename)
 
         # ensure that the name is exactly 20 bytes
         if (len(filename) > 20):
@@ -136,5 +137,27 @@ class Client:
             local_file.close()
         except:
             print("Failed to close the local file")
+
+
+
+# executing code:
+
+# args
+ip = sys.argv[1]
+port = sys.argv[2]
+path = sys.argv[3]
+filename = str(sys.argv[4])
+
+print("Creating client")
+c = Client(ip, port)
+
+print("Calling class method")
+c.send_file(path, filename)
+
+print("Done")
+time.sleep(3)
+
+
+
 
 
