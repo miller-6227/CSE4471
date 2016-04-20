@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Chewy|Poppins|Istok+Web|Press+Start+2P);
+
 body {
   padding-top: 40px;
   padding-bottom: 40px;
@@ -5,6 +7,7 @@ body {
 }
 
 .form-signin {
+  font-family: 'Poppins', sans-serif;
   max-width: 330px;
   padding: 15px;
   margin: 0 auto;

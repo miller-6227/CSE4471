@@ -9,13 +9,13 @@
             <p class="lead">
                 {% if documents %}
                 <h4>List of Public Key Files</h2>
-                    <ul class="no-bullets">
+                    <!-- <ul class="no-bullets"> -->
                     {% for document in documents %}
-                        <li><a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a></li>
+                        <p><a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a></p>
                     {% endfor %}
-                    </ul>
+                    <!-- </ul> -->
                 {% else %}
-                <p>No documents.</p>
+                <p>No public key files available.</p>
                 {% endif %}
             </p>
         </div>
@@ -35,7 +35,7 @@
                     <input class="btn btn-primary btn-lg" type="submit" value="Upload"/>
                 </form>
                 {% else %}
-                <h4> Please log in to transfer files </h4>
+                <a class="btn btn-danger btn-lg" href="{%url 'login'%}"> Log in to transfer files </a>
 
                 {% endif %} 
             </div>
