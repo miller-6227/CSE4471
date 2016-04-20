@@ -93,6 +93,7 @@ DATABASES = {
     }
 }
 
+LOGIN_REDIRECT_URL = '/fileTransfer/create'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators

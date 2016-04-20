@@ -1,6 +1,6 @@
 import client
 
-HOST = ''
+HOST = '128.146.165.254'
 port = 7777
 
 print("creating client")
