@@ -10,7 +10,7 @@ Tatsumi Suenaga
 
 **Description**
 
-A file transfer web application built using Django with RSA file encryption that allows users to securely send encrypted files to each other
+A web application built using Django with RSA file encryption that allows users to send encrypted files to each other
 
 **How to Run**
 
