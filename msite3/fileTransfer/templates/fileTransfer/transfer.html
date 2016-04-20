@@ -8,7 +8,7 @@
         <div class="padbutt">
             <p class="lead">
                 {% if documents %}
-                <h4>List of documents</h2>
+                <h4>List of Public Key Files</h2>
                     <ul class="no-bullets">
                     {% for document in documents %}
                         <li><a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a></li>
@@ -19,9 +19,10 @@
                 {% endif %}
             </p>
         </div>
-        <div class="row padbutt">
+        
+        <div class="row">
             <div class="col-md-4 col-md-offset-4 text-center">
-
+                {% if user.is_authenticated %}
                 <!-- Upload form. Note enctype attribute! -->
                 <form class="padbutt" action="{% url "transfer" %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -33,14 +34,12 @@
                     </p>
                     <input class="btn btn-primary btn-lg" type="submit" value="Upload"/>
                 </form>
+                {% else %}
+                <h4> Please log in to transfer files </h4>
+
+                {% endif %} 
             </div>
         </div>
-
-	{% if is_logged_in %}
-	{% else %}
-	<p> Please log in to transfer files </p>
-
-	{% endif %}	
 
       </div>
     </div><!-- /.container -->

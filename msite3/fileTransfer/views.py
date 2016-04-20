@@ -226,7 +226,6 @@ def receive(request):
     return render(request, 'fileTransfer/transfer.html', {'documents': documents, 'form': form})
 
 
-
 class TransferView(DetailView):
 
     model = User

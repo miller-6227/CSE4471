@@ -3,10 +3,10 @@
 {% block content %}
 
       {% if registered %}
-        Professor Jones says: <strong>thank you for registering!</strong>
+        Professor Jones says: <strong>Thank you for registering!</strong>
         <a href="{% url 'main' %}" class="btn btn-lg btn-primary btn-block">Return to the homepage.</a><br />
         {% else %}
-        P says: <strong>register here!</strong><br />
+        Professor Jones says: <strong>Register here!</strong><br />
 
         <form id="user_form" method="post" action="/fileTransfer/register/"
                 enctype="multipart/form-data">
