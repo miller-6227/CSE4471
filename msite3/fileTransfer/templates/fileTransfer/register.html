@@ -2,11 +2,13 @@
 
 {% block content %}
 
+      <h2>Create Account</h2>
+
       {% if registered %}
-        Professor Jones says: <strong>Thank you for registering!</strong>
-        <a href="{% url 'main' %}" class="btn btn-lg btn-primary btn-block">Return to the homepage.</a><br />
+        <p><strong>Thank you for registering!</strong><p>
+        <a href="{% url 'main' %}" class="btn btn-lg btn-primary btn-block">Return to the homepage.</a>
         {% else %}
-        Professor Jones says: <strong>Register here!</strong><br />
+        <p><strong>Register here!</strong></p>
 
         <form id="user_form" method="post" action="/fileTransfer/register/"
                 enctype="multipart/form-data">
