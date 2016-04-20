@@ -12,6 +12,7 @@ urlpatterns = [
         url(r'^sending/$', views.send, name="send"),
         url(r'^receiving/$', views.receive, name="receive"),
     url(r'^login/$', views.user_login, name='login'),
+    url(r'^logout/$', views.user_logout, name='logout'),
  #    url(r'^login/$', 'django.contrib.auth.views.login', {
  #    'template_name': 'fileTransfer/login.html'
 	# }),
