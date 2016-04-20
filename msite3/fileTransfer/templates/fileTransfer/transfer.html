@@ -33,19 +33,6 @@
                     </p>
                     <input class="btn btn-primary btn-lg" type="submit" value="Upload"/>
                 </form>
-                <div class="row">
-                    <div style="display:flex;justify-content:center;align-items:center;">
-                        <form action="{% url "send" %}" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <input class="btn btn-success btn-lg" type="submit" value="Send"/>
-                        </form>
-
-                        <form action="{% url "receive" %}" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <input class="btn btn-info btn-lg" type="submit" value="Receive"/>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
 
