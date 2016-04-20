@@ -1,36 +1,45 @@
-TODO:
-(1) transfer.html template call method from view based class TransferView
 
-    (a) sending needs the current user, friend, and file
-    
-    (b) receiving needs the current user
-
-(2) correct TransferView methods send() and receive()
-
-(3) make sure User.send_file and User.receive_file work
-
-    (a) modify send_file to set up the file for transfer
-
-(4) style everything
-
-
-
-
+**Secure File Transfer**
 
 CSE 4471 - Spring 2016
 
-Daniel Miller,
-Stephen Yau,
-Jimmy Kang,
-Tatsumi
+Daniel Miller
+Stephen Yau
+Jimmy Kang
+Tatsumi Suenaga
+
+**Description**
+
+A web application built using Django with RSA file encryption that allows users to send encrypted files to each other
+
+**How to Run**
+
+Clone project from Github: https://github.com/miller-6227/CSE4471
+
+Go to file directory:
+
+    cd CSE4471
+    cd msite3
+Migrate the database
+
+    python manage.py makemigrations
+    python manage.py migrate
+Run web app on local server
+
+    python manage.py runsslserver
+
+Open the development server link 
+
+    https://127.0.0.1:8000/
 
 
-Summary of included program:
+**Summary of included files:**
+
   server.py --> The server program listens on a port for a connection. Once receiving a connection, it will take the recieved data to a file in a subdirectory called recv.
   client.py --> The client program establishes a connection with the server and then sends a copy of a file.
   After copying the file, the files and connections are closed.
   
-Database notes:
+**Database Notes:**
   
   Contain Database tables for users. cd into directory folder is in. Then 'cd msite'.
   login/models.py contains the users
@@ -43,3 +52,4 @@ Database notes:
   ->' "name" =User(name= "Username" ,create_date= timezone.now() , password= "password" )' creates a new user
   ->' "Username".save()' saves the user
   
+
