@@ -5,3 +5,10 @@ body {
   padding: 40px 15px;
   text-align: center;
 }
+.no-bullets li{
+	list-style-type: none;
+}
+
+.padbutt {
+	padding-bottom: 30px;
+}

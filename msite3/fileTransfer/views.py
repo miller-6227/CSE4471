@@ -99,7 +99,7 @@ def wrongPassword(request):
 
 def send(request):
     # get the current user
-    current_user_name = "Dan"                               # TODO testing *****
+    current_user_name = "dea"                               # TODO testing *****
     user = User.objects.get(name = current_user_name)
     # select a friend
     friend_name = "dead"                                    # TODO testing *****
@@ -116,7 +116,7 @@ def send(request):
 
 def receive(request):
     # get the current userme 
-    current_user="Dan"                                      # TODO testing *****
+    current_user="dea"                                      # TODO testing *****
     user = User.objects.get(name = current_user)
     # call the model User method
     user.receive_file()
