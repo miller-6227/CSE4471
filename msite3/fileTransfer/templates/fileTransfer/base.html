@@ -55,10 +55,10 @@
           <ul class="nav navbar-nav">
             <li><a href="{% url 'transfer' %}">Transfer</a></li>
             <li><a href="{% url 'about' %}">About</a></li>
-            <li><a href="{% url 'register' %}">Account</a></li>
             {% if user.is_authenticated %}
-            <li><a href="#">Log Out</a></li>
+            <li><a href="{% url 'logout' %}">Log Out</a></li>
             {% else %}
+            <li><a href="{% url 'register' %}">Account</a></li>
             <li><a href="{% url 'login' %}">Log In</a></li>
             {% endif %}
           </ul>

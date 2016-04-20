@@ -11,6 +11,9 @@ from .forms import UserForm, UserProfileForm #delete UserProfileForm if shit
 from fileTransfer.forms import DocumentForm
 from django.views.generic import DetailView
 from django import template
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+
 
 def main(request):
     return render(request, 'fileTransfer/main.html', {})
@@ -220,6 +223,11 @@ def user_login(request):
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
         return render(request, 'fileTransfer/login.html', {})
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect('/fileTransfer/')
 
 def about(request):
     return render(request, 'fileTransfer/about.html', {})
